@@ -30,6 +30,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+dev = ["pytest>=9"]
+
+[dependency-groups]
 dev = [
     "pyinstaller>=6.17.0",
     "pytest>=9.0.2",

@@ -197,6 +197,11 @@ dependencies = [
 
 [package.optional-dependencies]
 dev = [
+    { name = "pytest" },
+]
+
+[package.dev-dependencies]
+dev = [
     { name = "pyinstaller" },
     { name = "pytest" },
     { name = "ruff" },
@@ -210,12 +215,17 @@ requires-dist = [
     { name = "markdown-it-py", specifier = ">=3.0" },
     { name = "mdit-py-plugins", specifier = ">=0.4" },
     { name = "pygments", specifier = ">=2.15" },
-    { name = "pyinstaller", marker = "extra == 'dev'", specifier = ">=6.17.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.0.2" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8" },
     { name = "pyyaml", specifier = ">=6.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.15.21" },
 ]
 provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pyinstaller", specifier = ">=6.17.0" },
+    { name = "pytest", specifier = ">=9.0.2" },
+    { name = "ruff", specifier = ">=0.15.21" },
+]
 
 [[package]]
 name = "mdit-py-plugins"
