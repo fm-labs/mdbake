@@ -1,0 +1,8 @@
+{% if toc %}
+<div class="toc-title">On this page</div>
+<ul>
+{% for link in toc recursive %}
+  <li><a href="{{ link.url }}">{{ link.title }}</a>{% if link.children %}<ul>{{ loop(link.children) }}</ul>{% endif %}</li>
+{% endfor %}
+</ul>
+{% endif %}

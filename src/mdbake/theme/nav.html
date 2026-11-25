@@ -1,0 +1,21 @@
+{% if nav and nav.items %}
+<ul class="nav">
+{% for item in nav.items recursive %}
+  {% if item.is_section %}
+  {% set active = item in page.ancestors %}
+  <li class="nav-section{% if active %} active{% endif %}">
+    <details{% if active %} open{% endif %}>
+      <summary>
+        {% if item.page %}<a href="{{ url(item.page.url) }}"{% if item.page is sameas page %} class="active" aria-current="page"{% endif %}>{{ item.title }}</a>{% else %}<span>{{ item.title }}</span>{% endif %}
+      </summary>
+      <ul>{{ loop(item.children) }}</ul>
+    </details>
+  </li>
+  {% elif item.is_page %}
+  <li><a href="{{ url(item.url) }}"{% if item is sameas page %} class="active" aria-current="page"{% endif %}>{{ item.title }}</a></li>
+  {% else %}
+  <li><a class="external" href="{{ item.url }}">{{ item.title }}</a></li>
+  {% endif %}
+{% endfor %}
+</ul>
+{% endif %}

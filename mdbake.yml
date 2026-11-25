@@ -1,0 +1,14 @@
+site_name: mdbake
+docs_dir: docs
+site_dir: dist/site
+nav:
+  - Home: index.md
+  - Guide:
+      - guide/configuration.md
+      - guide/middleware.md
+  - markdown-it-py: https://github.com/executablebooks/markdown-it-py
+middleware:
+  - mdbake.builtin.draft
+  - path: mdbake.builtin.frontmatter_defaults:FrontmatterDefaults
+    options:
+      defaults: {author: mdbake}

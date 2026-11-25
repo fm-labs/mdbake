@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="{{ extra.get('lang', 'en') }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.is_homepage %}{{ site_name }}{% else %}{{ page.title }} · {{ site_name }}{% endif %}</title>
+  {% if page.meta.description %}
+  <meta name="description" content="{{ page.meta.description }}">
+  {% endif %}
+  <link rel="stylesheet" href="{{ assets_url }}/style.css">
+  <link rel="stylesheet" href="{{ assets_url }}/pygments.css">
+  {% block extrahead %}{% endblock %}
+</head>
+<body>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+  <header class="topbar">
+    <label for="nav-toggle" class="nav-toggle-label" title="Toggle navigation">&#9776;</label>
+    <a class="site-name" href="{{ home_url }}">{{ site_name }}</a>
+  </header>
+  <div class="layout">
+    <nav class="sidebar" aria-label="Site navigation">
+      {% include "nav.html" %}
+    </nav>
+    <main class="content">
+      {% block content %}
+      <article class="markdown-body">
+        {{ page.html | safe }}
+      </article>
+      {% endblock %}
+      {% if page.previous_page or page.next_page %}
+      <footer class="pager">
+        {% if page.previous_page %}
+        <a class="prev" href="{{ url(page.previous_page.url) }}" rel="prev"><span>Previous</span>{{ page.previous_page.title }}</a>
+        {% endif %}
+        {% if page.next_page %}
+        <a class="next" href="{{ url(page.next_page.url) }}" rel="next"><span>Next</span>{{ page.next_page.title }}</a>
+        {% endif %}
+      </footer>
+      {% endif %}
+    </main>
+    <aside class="toc" aria-label="On this page">
+      {% include "toc.html" %}
+    </aside>
+  </div>
+</body>
+</html>
