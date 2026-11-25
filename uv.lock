@@ -215,7 +215,7 @@ requires-dist = [
     { name = "markdown-it-py", specifier = ">=3.0" },
     { name = "mdit-py-plugins", specifier = ">=0.4" },
     { name = "pygments", specifier = ">=2.15" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=9" },
     { name = "pyyaml", specifier = ">=6.0" },
 ]
 provides-extras = ["dev"]
