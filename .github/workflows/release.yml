@@ -85,7 +85,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
           PRERELEASE: ${{ needs.check-version.outputs.prerelease }}
-          TITLE: "Geenii Python SDK"
         run: |
           flags=()
           if [[ "${PRERELEASE}" == "true" ]]; then
@@ -93,7 +92,7 @@ jobs:
           fi
           gh release create "${TAG}" dist/* \
             --repo "${GITHUB_REPOSITORY}" \
-            --title "${TITLE} ${TAG}" \
+            --title "${TAG}" \
             --generate-notes \
             --verify-tag \
             "${flags[@]}"
