@@ -7,11 +7,9 @@ name = "mdbake"
 version = "0.1.0"
 description = "Bake HTML sites from MarkDown"
 readme = "README.md"
-requires-python = ">=3.13,<4.0"
 authors = [
     { name = "fm-labs", email = "mdbake@fmlabs.dev" },
 ]
-readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
@@ -20,6 +18,7 @@ license = "MIT"
 license-files = [
     "LICEN[CS]E*",
 ]
+requires-python = ">=3.13,<4.0"
 dependencies = [
     "markdown-it-py>=3.0",
     "mdit-py-plugins>=0.4",
@@ -31,7 +30,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8"]
+dev = [
+    "pyinstaller>=6.17.0",
+    "pytest>=9.0.2",
+    "ruff>=0.15.21",
+]
 
 [project.scripts]
 mdbake = "mdbake.cli:main"
