@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mdbake"
-version = "0.1.1"
+version = "0.2.0"
 description = "Bake HTML sites from MarkDown"
 readme = "README.md"
 authors = [
