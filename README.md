@@ -28,6 +28,8 @@ mdbake build                          # uses ./mdbake.yml if present, else docs/
 mdbake build -f path/to/mdbake.yml    # explicit config file
 mdbake build -d docs -o site          # override docs_dir / site_dir
 mdbake build --clean --strict         # wipe site_dir first; fail on warnings
+mdbake watch                          # build, serve on :8000, rebuild + reload browser on changes
+mdbake serve                          # serve the already built site_dir on :8000
 ```
 
 | Option | Meaning |
@@ -38,6 +40,12 @@ mdbake build --clean --strict         # wipe site_dir first; fail on warnings
 | `--clean` | Delete `site_dir` before building (refuses if it contains `docs_dir`) |
 | `-s, --strict` | Exit with an error if there were any warnings |
 | `-v, --verbose` / `-q, --quiet` | More / less output |
+
+`mdbake watch` takes `-f`, `-d`, `-o`, `-v` as above, plus `--host` (default `127.0.0.1`),
+`-p, --port` (default `8000`) and `--open` (open a browser). It watches `docs_dir`, the config
+file and `templates_dir`, rebuilds on changes (errors are logged, the server keeps running) and
+reloads open pages via livereload. `mdbake serve` takes `-f`, `-o`, `--host` and `-p, --port`
+and just serves `site_dir` over HTTP.
 
 ## Configuration
 

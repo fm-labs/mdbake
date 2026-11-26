@@ -11,8 +11,8 @@ def test_slugify():
 
 def test_build_toc_nesting():
     toc = build_toc([(1, "T", "t"), (2, "A", "a"), (3, "A1", "a1"), (2, "B", "b"), (4, "B1", "b1")])
-    assert [l.id for l in toc] == ["t"]
-    assert [l.id for l in toc[0].children] == ["a", "b"]
+    assert [e.id for e in toc] == ["t"]
+    assert [e.id for e in toc[0].children] == ["a", "b"]
     assert toc[0].children[0].children[0].id == "a1"
     assert toc[0].children[1].children[0].id == "b1"
     assert toc[0].children[0].url == "#a"
@@ -20,8 +20,8 @@ def test_build_toc_nesting():
 
 def test_build_toc_max_level_and_no_h1():
     toc = build_toc([(2, "A", "a"), (3, "A1", "a1"), (4, "deep", "d"), (2, "B", "b")], max_level=3)
-    assert [l.id for l in toc] == ["a", "b"]
-    assert [l.id for l in toc[0].children] == ["a1"]
+    assert [e.id for e in toc] == ["a", "b"]
+    assert [e.id for e in toc[0].children] == ["a1"]
     assert toc[0].children[0].children == []
 
 

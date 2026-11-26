@@ -27,6 +27,7 @@ dependencies = [
     "Jinja2>=3.1",
     "click>=8.1",
     "Pygments>=2.15",
+    "livereload>=2.7.1",
 ]
 
 [project.optional-dependencies]

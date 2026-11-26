@@ -113,3 +113,35 @@ def test_clean_refuses_unsafe(tmp_path):
     assert result.exit_code == 1
     assert "refusing to clean" in result.output
     assert (docs / "index.md").exists()
+
+
+def test_cli_serve_missing_site_dir(tmp_path):
+    result = CliRunner().invoke(main, ["serve", "-o", str(tmp_path / "nope")])
+    assert result.exit_code != 0
+    assert "Site directory not found" in result.output
+
+
+def test_cli_watch(fixture_docs, tmp_path, monkeypatch):
+    import livereload
+
+    calls = {"watch": []}
+
+    class FakeServer:
+        def watch(self, path, func=None, delay=None):
+            calls["watch"].append((path, func))
+
+        def serve(self, **kwargs):
+            calls["serve"] = kwargs
+
+    monkeypatch.setattr(livereload, "Server", FakeServer)
+    monkeypatch.chdir(tmp_path)  # no mdbake.yml here
+    site_dir = tmp_path / "site"
+    result = CliRunner().invoke(main, ["watch", "-d", str(fixture_docs), "-o", str(site_dir), "--port", "9000"])
+    assert result.exit_code == 0, result.output
+    assert (site_dir / "index.html").is_file()
+    assert calls["serve"]["root"] == str(site_dir) and calls["serve"]["port"] == 9000
+    (path, rebuild), = calls["watch"]
+    assert path == str(fixture_docs)
+    (site_dir / "index.html").unlink()
+    rebuild()
+    assert (site_dir / "index.html").is_file()
