@@ -9,6 +9,9 @@
   {% endif %}
   <link rel="stylesheet" href="{{ assets_url }}/style.css">
   <link rel="stylesheet" href="{{ assets_url }}/pygments.css">
+  {% if config.search %}
+  <script src="{{ assets_url }}/search.js" data-base="{{ base_url }}" data-index="{{ assets_url }}/search_index.js" defer></script>
+  {% endif %}
   {% block extrahead %}{% endblock %}
 </head>
 <body>
@@ -16,6 +19,14 @@
   <header class="topbar">
     <label for="nav-toggle" class="nav-toggle-label" title="Toggle navigation">&#9776;</label>
     <a class="site-name" href="{{ home_url }}">{{ site_name }}</a>
+    {% if config.search %}
+    <div class="search" role="search">
+      <input type="search" id="search-input" class="search-input" placeholder="Search" aria-label="Search the site"
+             autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list"
+             aria-controls="search-results" aria-expanded="false">
+      <div id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></div>
+    </div>
+    {% endif %}
   </header>
   <div class="layout">
     <nav class="sidebar" aria-label="Site navigation">

@@ -7,6 +7,7 @@ A minimal Markdown → HTML documentation site generator.
 - Builds navigation from `mdbake.yml`, or automatically from the directory tree
 - Rewrites links between `.md` files into relative `.html` links and warns about broken links and missing `#anchors`
 - Generates an in-page table of contents from headings
+- Full-text search: a section-level index built at build time, searched in the browser in a Web Worker
 - Extensible through a middleware chain (frontmatter processing, text substitution, HTML post-processing, ...)
 
 All output links are relative, so the generated site works when opened straight from disk (`file://`).
@@ -48,6 +49,7 @@ docs_dir: docs
 site_dir: site
 templates_dir: null            # optional theme override
 toc_depth: 3                   # deepest heading level in "On this page"
+search: true                   # build the search index and show the search box
 nav:                           # optional; auto-generated from the dir tree if omitted
   - Home: index.md
   - Guide:
@@ -80,6 +82,19 @@ Without `nav`, the directory tree is used: the root `index.md` first, then pages
 sub-directories as sections (a directory's `index.md` becomes the section link). Add
 `nav_order: <number>` to a page's frontmatter to reorder. Pages missing from an explicit
 `nav` are still built, with a warning.
+
+## Search
+
+With `search: true` (the default), every page is split into sections at its headings and
+written to `_mdbake/search_index.js`. In the browser, the index is loaded the first time the
+search box is used, and searching runs in a Web Worker, so large pages never block typing.
+Results link straight to the matching heading. Press `/` or `Ctrl/Cmd+K` to focus the box.
+
+The search works on sites opened from disk (`file://`) too: the index is loaded with a
+`<script>` tag rather than `fetch()`, and the worker is created from a Blob URL. If a browser
+refuses to start the worker, the search runs on the page instead.
+
+Add `search: false` to a page's frontmatter to keep it out of the index.
 
 ## Middleware
 
@@ -130,8 +145,8 @@ Built-ins:
 
 The built-in theme (in `src/mdbake/theme/`) has a left sidebar nav, an "On this page" TOC,
 prev/next links, light/dark mode via `prefers-color-scheme`, and a mobile layout. To customize
-it, set `templates_dir` and put any of `base.html`, `nav.html`, `toc.html` or `style.css`
-there; missing files fall back to the built-in ones.
+it, set `templates_dir` and put any of `base.html`, `nav.html`, `toc.html`, `style.css` or
+`search.js` there; missing files fall back to the built-in ones.
 
 Template context: `page`, `nav`, `toc`, `config`, `site_name`, `extra`, `base_url`,
 `assets_url`, `home_url`, and `url(target)` to make a site-root URL relative to the current page.
@@ -154,12 +169,13 @@ src/mdbake/
   markdown.py     markdown-it setup, heading ids, highlighting
   links.py        relative link rewriting
   toc.py          table of contents
+  search.py       search index (sections per heading)
   nav.py          navigation (explicit / auto), prev/next
   page.py         Page model
   middleware.py   middleware loader and pipeline
   builder.py      build orchestration
   builtin/        bundled middleware
-  theme/          default templates and CSS
+  theme/          default templates, CSS and search.js
 ```
 
 See [BUILDME.md](BUILDME.md) for the original design plan.

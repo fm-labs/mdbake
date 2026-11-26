@@ -29,6 +29,7 @@ class Config:
     middleware: list = field(default_factory=list)
     extra: dict = field(default_factory=dict)
     toc_depth: int = 3
+    search: bool = True
     pygments_style: str = "default"
     pygments_dark_style: str = "monokai"
     config_file: Path | None = None
@@ -113,6 +114,10 @@ def load_config(
     if not isinstance(toc_depth, int) or not 1 <= toc_depth <= 6:
         raise ConfigError("'toc_depth' must be an integer between 1 and 6")
 
+    search = data.get("search", defaults.search)
+    if not isinstance(search, bool):
+        raise ConfigError("'search' must be true or false")
+
     templates_dir = data.get("templates_dir")
 
     return Config(
@@ -124,6 +129,7 @@ def load_config(
         middleware=middleware,
         extra=extra,
         toc_depth=toc_depth,
+        search=search,
         pygments_style=str(data.get("pygments_style", defaults.pygments_style)),
         pygments_dark_style=str(data.get("pygments_dark_style", defaults.pygments_dark_style)),
         config_file=config_file,

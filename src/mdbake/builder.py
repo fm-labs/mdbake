@@ -21,6 +21,7 @@ from .markdown import create_markdown, pygments_css
 from .middleware import Pipeline
 from .nav import Navigation, build_nav
 from .page import Page
+from .search import build_index, index_script
 from .toc import build_toc
 
 log = logging.getLogger("mdbake")
@@ -207,10 +208,17 @@ def _write_site(site: Site, site_dir: Path) -> None:
 
     theme_out = site_dir / ASSETS_DIR
     theme_out.mkdir(parents=True, exist_ok=True)
-    style = THEME_DIR / "style.css"
-    if config.templates_dir is not None and (config.templates_dir / "style.css").is_file():
-        style = config.templates_dir / "style.css"
-    shutil.copyfile(style, theme_out / "style.css")
+    shutil.copyfile(_theme_file(config, "style.css"), theme_out / "style.css")
     (theme_out / "pygments.css").write_text(
         pygments_css(config.pygments_style, config.pygments_dark_style), encoding="utf-8"
     )
+    if config.search:
+        shutil.copyfile(_theme_file(config, "search.js"), theme_out / "search.js")
+        (theme_out / "search_index.js").write_text(index_script(build_index(site.pages)), encoding="utf-8")
+
+
+def _theme_file(config: Config, name: str) -> Path:
+    """``name`` from ``templates_dir`` if it exists there, else from the built-in theme."""
+    if config.templates_dir is not None and (config.templates_dir / name).is_file():
+        return config.templates_dir / name
+    return THEME_DIR / name

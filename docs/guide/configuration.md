@@ -10,10 +10,11 @@ title: Configuration
 | `site_name` | `Documentation` | Shown in the top bar and page titles |
 | `docs_dir` | `docs` | Markdown sources |
 | `site_dir` | `site` | Output directory |
-| `templates_dir` | — | Overrides `base.html`, `nav.html`, `toc.html`, `style.css` |
+| `templates_dir` | — | Overrides `base.html`, `nav.html`, `toc.html`, `style.css`, `search.js` |
 | `nav` | auto | Explicit navigation (see below) |
 | `middleware` | `[]` | Middleware chain (see [Middleware](middleware.md)) |
 | `toc_depth` | `3` | Deepest heading level in "On this page" |
+| `search` | `true` | Build the search index and show the search box (pages opt out with `search: false` frontmatter) |
 | `extra` | `{}` | Free-form, passed to templates (`extra.lang` sets `<html lang>`) |
 
 ## Navigation
